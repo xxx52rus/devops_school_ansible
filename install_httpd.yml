@@ -17,9 +17,18 @@
        firewalld:
          service: http
          permanent: true
-     - name: change /var/www/html/index.html
+     - name: change_and_create_index.html
        lineinfile:
          path: /var/www/html/index.html
          state: absent
          line: 'Welcome to my web server'
          create: yes
+     - name: disable_NetworkManager
+       service:
+         name: NetworkManager
+         state: stopped
+         enabled: no
+     - name: change_kernel_parametres_in_grub_net_ifnames_biosdev_name_to_disable
+       lineinfole:
+         path:/etc/default/grub
+         regexp:^GRUB_CMDLINE_LINUX="
