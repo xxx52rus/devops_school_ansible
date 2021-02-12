@@ -1,0 +1,25 @@
+---
+  -name: install_httpd_server
+   hosts: web_servers
+   become: yes
+   become_user: root
+   tasks:
+     - name: installation or check that httpd installed and latest
+       yum:
+         name: httpd
+         state: latest
+     - name: check_that_httpd_are_up_running_and_enabled
+       service:
+         name: httpd
+         state: started
+         enabled: yes
+     - name: enable_service_httpd_on_firewall
+       firewalld:
+         service: http
+         permanent: true
+     - name: change /var/www/html/index.html
+       lineinfile:
+         path: /var/www/html/index.html
+         state: absent
+         line: 'Welcome to my web server'
+         create: yes
