@@ -4,5 +4,5 @@ all:
   children:
     webservers:
       hosts:
-        nn_web_lin001:
-        nn_web_lin002:
+        nn-web-lin001:
+        nn-web-lin002:
