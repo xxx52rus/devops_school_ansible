@@ -37,5 +37,5 @@
          regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
          line: '\1 net.ifnames=0 biosdevname=0"'
          backup: yes
-     - name: grub2-mkconfig -o /boot/grub2/grub.cfg
-       command: grub2-mkconfig -o /boot/grub2/grub.cfg
+     - name: grub2-mkconfig
+       command: grub2-mkconfig
