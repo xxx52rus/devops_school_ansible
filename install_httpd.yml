@@ -4,7 +4,7 @@
   become: yes
   become_user: root
    
-   tasks:
+  tasks:
      - name: installation or check that httpd installed and latest
        yum:
          name: httpd
