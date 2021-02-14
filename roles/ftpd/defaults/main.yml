@@ -1,0 +1,6 @@
+---
+# defaults file for ftpd
+
+
+anonymous_enable_bool: YES
+anon_upload_enable_bool: YES

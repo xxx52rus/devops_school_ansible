@@ -1,3 +1,7 @@
 [web_servers]
 nn-web-lin001
 nn-web-lin002
+
+[ftp_servers]
+nn-web-lin001
+nn-web-lin002
