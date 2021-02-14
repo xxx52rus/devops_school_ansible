@@ -9,16 +9,11 @@
          service: http
          state: disabled
          permanent: true
-     - name: check_that_httpd_fully_killed_from_host
-       service:
-         name: httpd
-         state: stopped
-         enabled: disabled
-     - name: uninstallation or check that httpd is not installed
+     - name: uninstallation_or_check_that_httpd_is_not_installed
        yum:
          name: httpd
          state: absent
      - name: delete_index.html
-       lineinfile:
+       file:
          path: /var/www/html/index.html
          state: absent
