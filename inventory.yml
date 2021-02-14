@@ -1,0 +1,8 @@
+all:
+  hosts:
+    ansible_devops_school_machines:
+  children:
+    webservers:
+      hosts:
+        nn_web_lin001:
+        nn_web_lin002:
