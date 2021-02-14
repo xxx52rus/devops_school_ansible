@@ -1,0 +1,24 @@
+- name: 1st_home_task_part2
+  hosts: web_servers
+  become: yes
+  become_user: root
+   
+  tasks:
+     - name: disable_service_httpd_on_firewall
+       firewalld:
+         service: http
+         state: disabled
+         permanent: true
+     - name: check_that_httpd_fully_killed_from_host
+       service:
+         name: httpd
+         state: stopped
+         enabled: disabled
+     - name: uninstallation or check that httpd is not installed
+       yum:
+         name: httpd
+         state: absent
+     - name: delete_index.html
+       lineinfile:
+         path: /var/www/html/index.html
+         state: absent

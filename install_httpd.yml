@@ -1,5 +1,5 @@
 ---
-- name: 1st_home_tsak
+- name: 1st_home_task_part_1
   hosts: web_servers
   become: yes
   become_user: root
@@ -17,6 +17,7 @@
      - name: enable_service_httpd_on_firewall
        firewalld:
          service: http
+         state: enabled
          permanent: true
      - name: change_and_create_index.html
        lineinfile:
@@ -32,6 +33,9 @@
      - name: change_kernel_parametres_in_grub_net_ifnames_biosdev_name_to_disable
        lineinfile:
          path: /etc/default/grub
-         regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((\w.?)*)"$'
-         line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0 biosdevname=0"'
+         backrefs: yes
+         regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+         line: '\1 net.ifnames=0 biosdevname=0"'
+#         regexp: '^GRUB_CMDLINE_LINUX="((\w.?)*)"$'
+#         line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"'
          backup: yes
