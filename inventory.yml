@@ -2,7 +2,7 @@ all:
   hosts:
     ansible_devops_school_machines:
   children:
-    webservers:
+    web_servers:
       hosts:
         nn-web-lin001:
         nn-web-lin002:
