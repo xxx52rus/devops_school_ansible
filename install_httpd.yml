@@ -29,6 +29,8 @@
          state: stopped
          enabled: no
      - name: change_kernel_parametres_in_grub_net_ifnames_biosdev_name_to_disable
-       lineinfole:
+       lineinfile:
          path:/etc/default/grub
-         regexp:^GRUB_CMDLINE_LINUX="
+         regexp:'^GRUB_CMDLINE_LINUX_DEFAULT="((\w.?)*)"$'
+         replace: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0 biosdevname=0"'
+         backup: yes
