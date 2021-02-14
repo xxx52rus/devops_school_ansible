@@ -1,8 +1,9 @@
 ---
-  -name: install_httpd_server
-   hosts: web_servers
-   become: yes
-   become_user: root
+- name: 1st_home_tsak
+  hosts: web_servers
+  become: yes
+  become_user: root
+   
    tasks:
      - name: installation or check that httpd installed and latest
        yum:
@@ -20,7 +21,7 @@
      - name: change_and_create_index.html
        lineinfile:
          path: /var/www/html/index.html
-         state: absent
+         state: present
          line: 'Welcome to my web server'
          create: yes
      - name: disable_NetworkManager
@@ -30,7 +31,7 @@
          enabled: no
      - name: change_kernel_parametres_in_grub_net_ifnames_biosdev_name_to_disable
        lineinfile:
-         path:/etc/default/grub
-         regexp:'^GRUB_CMDLINE_LINUX_DEFAULT="((\w.?)*)"$'
-         replace: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0 biosdevname=0"'
+         path: /etc/default/grub
+         regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((\w.?)*)"$'
+         line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 net.ifnames=0 biosdevname=0"'
          backup: yes
