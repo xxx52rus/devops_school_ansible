@@ -1,19 +1,14 @@
-- name: 1st_home_task_part2
-  hosts: web_servers
-  become: yes
-  become_user: root
-   
-  tasks:
+---  
      - name: disable_service_httpd_on_firewall
        firewalld:
-         service: http
+         service: '{{ http_protocol }}'
          state: disabled
          permanent: true
      - name: uninstallation_or_check_that_httpd_is_not_installed
        yum:
-         name: httpd
+         name: '{{ apache_package_name }}'
          state: absent
      - name: delete_index.html
        file:
-         path: /var/www/html/index.html
+         path: '{{ html_dir_path }}/{{ index_file_name }}'
          state: absent

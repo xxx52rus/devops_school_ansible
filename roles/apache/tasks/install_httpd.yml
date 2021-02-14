@@ -1,41 +1,24 @@
 ---
-- name: 1st_home_task_part_1
-  hosts: web_servers
-  become: yes
-  become_user: root
-   
-  tasks:
      - name: installation or check that httpd installed and latest
        yum:
-         name: httpd
+         name: '{{ apache_package_name }}'
          state: latest
-     - name: check_that_httpd_are_up_running_and_enabled
-       service:
-         name: httpd
-         state: started
-         enabled: yes
+       notify: 
+         - start and enable httpd service
+     
      - name: enable_service_httpd_on_firewall
        firewalld:
-         service: http
+         service: '{{ http_protocol }}'
          state: enabled
          permanent: true
+     
      - name: change_and_create_index.html
        lineinfile:
-         path: /var/www/html/index.html
+         path: '{{ html_dir_path }}/{{ index_file_name }}'
          state: present
          line: 'Welcome to my web server'
          create: yes
-     - name: disable_NetworkManager
-       service:
-         name: NetworkManager
-         state: stopped
-         enabled: no
-     - name: change_kernel_parametres_in_grub_net_ifnames_biosdev_name_to_disable
-       lineinfile:
-         path: /etc/default/grub
-         backrefs: yes
-         regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
-         line: '\1 net.ifnames=0 biosdevname=0"'
-         backup: yes
-     - name: grub2-mkconfig
-       command: grub2-mkconfig
+     
+     #flush handlers because in our role we install and uninstall httpd, but handlers are triggered at the end of play
+     - name: flush handlers
+       meta: flush_handlers
