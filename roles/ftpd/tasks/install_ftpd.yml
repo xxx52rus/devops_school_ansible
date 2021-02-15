@@ -20,3 +20,18 @@
         name: vsftpd
         enabled: yes
         state: started
+
+     - name: SE context
+       sefcontext:
+        target: '/var/ftp/pub(/.*)?'
+        setype: public_content_rw_t
+        state: present
+
+     - name: set ftpd ftpd_anon_write boolean on
+       seboolean:
+         name: ftpd_anon_write
+         state: yes
+         persistent: yes
+
+     - name: Apply new SELinux file context to filesystem
+       command: restorecon -irv /var/ftp/pub
