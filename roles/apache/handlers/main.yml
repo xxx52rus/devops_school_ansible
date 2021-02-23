@@ -1,7 +1,0 @@
----
-# handlers file for apache
-  - name: start and enable httpd service
-    service:
-      name: '{{ apache_service_name }}'
-      state: started
-      enabled: yes

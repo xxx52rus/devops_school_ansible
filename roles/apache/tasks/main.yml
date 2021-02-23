@@ -1,8 +1,0 @@
----
-# tasks file for apache
-
-- name: install web server
-  include_tasks: install_httpd.yml
-
-- name: uninstall web server
-  include_tasks: uninstall_httpd.yml
