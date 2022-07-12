@@ -1,0 +1,68 @@
+---
+     - name: installation or check that ftpd installed and latest
+       yum:
+         name: vsftpd
+         state: latest
+     
+     - name: enable_service_ftpd_on_firewall
+       firewalld:
+         service: ftp
+         state: enabled
+         immediate: yes
+         permanent: yes
+
+     - name: open_port_21_on_firewall
+       firewalld:
+         port: 21/tcp
+         state: enabled
+         immediate: yes
+         permanent: yes
+
+     - name: Give insecure permissions to an existing file
+       file:
+         path: "{{ anon_root_str }}"
+         owner: nobody
+         group: nobody
+         mode: '0755'
+         state: directory
+    
+     - name: Create maps directory in ftp_root
+       file:
+         path: "{{ anon_root_str }}/test"
+         owner: root
+         group: root
+         mode: '0777'
+         state: directory
+
+     - name: change_ftpd_config_via_j2template
+       template:
+         src: vsftpd.conf.j2
+         dest: /etc/vsftpd/vsftpd.conf
+         backup: yes
+
+     - name: service ftpd start
+       service:
+        name: vsftpd
+        enabled: yes
+        state: started
+
+     - name: SE context
+       sefcontext:
+        target: '/var/ftp/pub(/.*)?'
+        setype: public_content_rw_t
+        state: present
+
+     - name: set ftpd ftpd_anon_write boolean on
+       seboolean:
+         name: ftpd_anon_write
+         state: yes
+         persistent: yes
+
+    #  - name: set ftpd setsebool ftpd_full_access boolean on
+    #    seboolean:
+    #      name: ftpd_full_access
+    #      state: yes
+    #      persistent: yes
+
+     - name: Apply new SELinux file context to filesystem
+       command: restorecon -irv /var/ftp/pub
